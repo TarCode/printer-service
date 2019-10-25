@@ -1,93 +1,60 @@
-const {
-    GraphQLSchema,
-    GraphQLObjectType,
-    GraphQLString,
-    GraphQLList,
-    GraphQLNonNull,
-    GraphQLBoolean,
-    GraphQLEnumType
-} = require('graphql');
+const {gql} = require("apollo-server-lambda");
+
 const addPrinter = require('./resolvers/create');
 const viewPrinter = require('./resolvers/view');
 const updatePrinter = require('./resolvers/update');
 const listPrinters = require('./resolvers/list');
-const removePrinters = require('./resolvers/remove');
+const removePrinter = require('./resolvers/remove');
 
-const PrinterStatusType = new GraphQLEnumType({
-    name: 'PrinterStateEnum',
-    values: {
-        INACTIVE: {
-            value: 0,
-        },
-        ACTIVE: {
-            value: 1,
-        }
+const typeDefs = gql`
+  type DeletePrinterResponse {
+    message: String
+  }
+  enum StatusType {
+    ACTIVE
+    INACTIVE
+  }
+  type Printer {
+    id: String!
+    name: String!
+    ipAddress: String!
+    status: StatusType
+  }
+  type Query {
+    printers: [Printer]
+    printer(id: String!): Printer
+  }
+  type Mutation {
+    addPrinter(name: String!, ipAddress: String!, status: StatusType): Printer
+    updatePrinter(id: String!, name: String!, ipAddress: String!, status: StatusType): Printer
+    removePrinter(id: String!): DeletePrinterResponse
+  }
+`;
+
+const resolvers = {
+  Query: {
+    printers: () => {
+      return listPrinters()
     },
-});
-
-const printerType = new GraphQLObjectType({
-    name: 'Printer',
-    fields: {
-        id: { type: new GraphQLNonNull(GraphQLString) },
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        ipAddress: { type: new GraphQLNonNull(GraphQLString) },
-        createdAt: { type: new GraphQLNonNull(GraphQLString) },
-        status: {
-            type: PrinterStatusType
-        },
+    printer: (_, {id}) => {
+      return viewPrinter(id)
     }
-});
+  },
+  Mutation: {
+    addPrinter: (_, args) => {
+      return addPrinter(args)
+    },
+    updatePrinter: (_, args) => {
+      return updatePrinter(args)
+    },
+    removePrinter: async (_, args) => {
+      await removePrinter(args.id)
+      return "Deleted"
+    }
+  }
+};
 
-
-const schema = new GraphQLSchema({
-    query: new GraphQLObjectType({
-        name: 'Query',
-        fields: {
-            listPrinters: {
-                type: new GraphQLList(printerType),
-                resolve: (parent, args) => listPrinters()
-            },
-            viewPrinter: {
-                args: {
-                    id: { type: new GraphQLNonNull(GraphQLString) }
-                },
-                type: printerType,
-                resolve: (parent, args) => viewPrinter(args.id)
-            }
-        }
-    }),
-
-    mutation: new GraphQLObjectType({
-        name: 'Mutation',
-        fields: {
-            createPrinter: {
-                args: {
-                    name: { type: new GraphQLNonNull(GraphQLString) },
-                    ipAddress: { type: new GraphQLNonNull(GraphQLString) },
-                    status: { type: new GraphQLNonNull(PrinterStatusType) }
-                },
-                type: printerType,
-                resolve: (parent, args) => addPrinter(args)
-            },
-            updatePrinter: {
-                args: {
-                    id: { type: new GraphQLNonNull(GraphQLString) },
-                    name: { type: new GraphQLNonNull(GraphQLString) },
-                    ipAddress: { type: new GraphQLNonNull(GraphQLString) },
-                    status: { type: new GraphQLNonNull(PrinterStatusType) }
-                },
-                type: printerType,
-                resolve: (parent, args) => updatePrinter(args)
-            },
-            removePrinters: {
-                args: {
-                    id: { type: new GraphQLNonNull(GraphQLString) }
-                },
-                type: GraphQLBoolean,
-                resolve: (parent, args) => removePrinters(args.id)
-            }
-        }
-    })
-});
-
-module.exports = schema;
+module.exports = {
+  typeDefs,
+  resolvers
+};
