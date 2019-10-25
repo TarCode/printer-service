@@ -9,7 +9,8 @@ module.exports = (data) => {
             name: data.name,
             ipAddress: data.ipAddress,
             id: uuid.v1(),
-            status: 'ACTIVE'
+            status: 'ACTIVE',
+            createdAt: Date.now(),
         }
     };
     return dynamoDb.put(params).promise()
