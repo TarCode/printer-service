@@ -2,7 +2,6 @@ const {
     GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
-    GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
     GraphQLBoolean,
@@ -64,7 +63,7 @@ const schema = new GraphQLSchema({
             createPrinter: {
                 args: {
                     name: { type: new GraphQLNonNull(GraphQLString) },
-                    ipAddress: { type: new GraphQLNonNull(GraphQLInt) },
+                    ipAddress: { type: new GraphQLNonNull(GraphQLString) },
                     status: { type: new GraphQLNonNull(PrinterStatusType) }
                 },
                 type: printerType,
@@ -74,7 +73,7 @@ const schema = new GraphQLSchema({
                 args: {
                     id: { type: new GraphQLNonNull(GraphQLString) },
                     name: { type: new GraphQLNonNull(GraphQLString) },
-                    ipAddress: { type: new GraphQLNonNull(GraphQLInt) },
+                    ipAddress: { type: new GraphQLNonNull(GraphQLString) },
                     status: { type: new GraphQLNonNull(PrinterStatusType) }
                 },
                 type: printerType,

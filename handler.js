@@ -4,6 +4,17 @@
 
   module.exports.queryPrinters = (event, context, callback) => {
       graphql(schema, event.body)
-      .then(result => callback(null, {statusCode: 200, body: JSON.stringify(result)}))
+      .then(result => (
+          callback(
+            null, 
+            {
+              statusCode: 200, 
+              'Content-Type': 'application/json', 
+              'Access-Control-Allow-Origin': '*',  
+              body: JSON.stringify(result)
+            }
+          )
+        )
+      )
       .catch(callback);
   };
