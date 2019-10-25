@@ -16,7 +16,7 @@ provider:
                 Fn::Join:
                   - ""
                   - - "arn:aws:dynamodb:*:*:table/"
-                    - Ref: ProductsGqlDynamoDbTable
+                    - Ref: PrintersGqlDynamoDbTable
 
 functions:
   queryPrinters:
@@ -31,7 +31,7 @@ functions:
 
 resources:
     Resources:
-      ProductsGqlDynamoDbTable:
+      PrintersGqlDynamoDbTable:
         Type: AWS::DynamoDB::Table
         Properties:
           TableName: printers
