@@ -6,10 +6,10 @@ module.exports = (data) => {
     const params = {
         TableName: process.env.TABLE_NAME,
         Item: {
+            id: uuid.v1(),
             name: data.name,
             ipAddress: data.ipAddress,
-            id: uuid.v1(),
-            status: 'ACTIVE',
+            status: data.status,
             createdAt: Date.now(),
         }
     };
