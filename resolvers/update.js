@@ -16,6 +16,5 @@ module.exports = (data) => {
         ReturnValues: "ALL_NEW"
       };
     return dynamoDb.put(params).promise()
-           .then(result => data)
 };
 
