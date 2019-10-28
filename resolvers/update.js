@@ -7,11 +7,11 @@ module.exports = (data) => {
         Key: {
           id: data.id
         },
-        UpdateExpression: "SET printerName = :printerName, ipAddress = :ipAddress, status = :status",
+        UpdateExpression: "SET printerName = :printerName, ipAddress = :ipAddress, printerStatus = :printerStatus",
         ExpressionAttributeValues: {
           ":ipAddress": data.ipAddress,
           ":printerName": data.printerName,
-          ":status": data.status || 'ACTIVE'
+          ":printerStatus": data.printerStatus || 'ACTIVE'
         },
         ReturnValues: "ALL_NEW"
       };

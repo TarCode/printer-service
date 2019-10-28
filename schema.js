@@ -18,15 +18,15 @@ const typeDefs = gql`
     id: String!
     printerName: String!
     ipAddress: String!
-    status: StatusType
+    printerStatus: StatusType
   }
   type Query {
     printers: [Printer]
     printer(id: String!): Printer
   }
   type Mutation {
-    addPrinter(printerName: String!, ipAddress: String!, status: StatusType): Printer
-    updatePrinter(id: String!, printerName: String!, ipAddress: String!, status: StatusType): Printer
+    addPrinter(printerName: String!, ipAddress: String!, printerStatus: StatusType): Printer
+    updatePrinter(id: String!, printerName: String!, ipAddress: String!, printerStatus: StatusType): Printer
     removePrinter(id: String!): DeletePrinterResponse
   }
 `;

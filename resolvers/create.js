@@ -9,7 +9,7 @@ module.exports = (data) => {
             id: uuid.v1(),
             printerName: data.printerName,
             ipAddress: data.ipAddress,
-            status: data.status,
+            printerStatus: data.printerStatus,
             createdAt: Date.now(),
         }
     };
