@@ -7,6 +7,12 @@ module.exports = (data) => {
         Key: {
           id: data.id
         },
+        Item: {
+            id: data.id,
+            name: data.name,
+            ipAddress: data.ipAddress,
+            status: data.status
+        },
         UpdateExpression: "SET name = :name, ipAddress = :ipAddress, status = :status",
         ExpressionAttributeValues: {
           ":ipAddress": data.ipAddress || null,
@@ -16,5 +22,6 @@ module.exports = (data) => {
         ReturnValues: "ALL_NEW"
       };
     return dynamoDb.put(params).promise()
+           .then(r => r.Item)
 };
 

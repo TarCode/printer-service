@@ -7,7 +7,7 @@ const listPrinters = require('./resolvers/list');
 const removePrinter = require('./resolvers/remove');
 
 const typeDefs = gql`
-  type PrinterResponse {
+  type DeletePrinterResponse {
     message: String
   }
   enum StatusType {
@@ -26,8 +26,8 @@ const typeDefs = gql`
   }
   type Mutation {
     addPrinter(name: String!, ipAddress: String!, status: StatusType): Printer
-    updatePrinter(id: String!, name: String!, ipAddress: String!, status: StatusType): PrinterResponse
-    removePrinter(id: String!): PrinterResponse
+    updatePrinter(id: String!, name: String!, ipAddress: String!, status: StatusType): Printer
+    removePrinter(id: String!): DeletePrinterResponse
   }
 `;
 
