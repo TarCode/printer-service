@@ -7,7 +7,7 @@ module.exports = (data) => {
         TableName: process.env.TABLE_NAME,
         Item: {
             id: uuid.v1(),
-            name: data.name,
+            printerName: data.printerName,
             ipAddress: data.ipAddress,
             status: data.status,
             createdAt: Date.now(),
